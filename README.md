@@ -32,3 +32,6 @@ Manage user profiles, addresses, and payment methods.
 Administer the product catalog, inventory, and orders.
 Feel free to explore the codebase to learn more about the implemented features and the underlying architecture.
 
+## Source
+
+This project is based on the following resource: [Source of the Training](https://www.youtube.com/watch?v=th__PLvBxZI&list=PLQVXoXFVVtp1DFmoTL4cPTWEWiqndKexZ&ab_channel=Gen%C3%A7ayY%C4%B1ld%C4%B1z).
