@@ -13,5 +13,10 @@ namespace ECommerceAPI.Application.Abstraction.Services
         Task<CreateUserResponse> CreateAsync(CreateUser model);
         Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate);
         Task UpdatePasswordAsync(string userId, string resetToken, string newPassword);
+        Task<List<ListUser>> GetAllUsers(int page, int size);
+        int TotalUsersCount { get; }
+        Task AssignRoleToUserAsnyc(string userId, string[] roles);
+        Task<string[]> GetRolesToUserAsync(string userIdOrName);
+        Task<bool> HasRolePermissionToEndpointAsync(string name, string code);
     }
 }

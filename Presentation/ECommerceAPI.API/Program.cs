@@ -4,6 +4,7 @@ using ECommerce.Infrastructure.Services.Storage.Azure;
 using ECommerce.Infrastructure.Services.Storage.Local;
 using ECommerceAPI.API.Configurations.ColumnWriters;
 using ECommerceAPI.API.Extensions;
+using ECommerceAPI.API.Filters;
 using ECommerceAPI.Application;
 using ECommerceAPI.Application.Validators.Products;
 using ECommerceAPI.Persistence;
@@ -36,9 +37,14 @@ builder.Services.AddStorage<AzureStorage>(); //günü geldiğinde azure keyi jso
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => 
     policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
 
-builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>()).AddFluentValidation(configuration => 
-    configuration.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>())
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidationFilter>();
+    options.Filters.Add<RolePermissionFilter>();
+})
+    .AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>())
     .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
+
 
 Logger log = new LoggerConfiguration()
     .WriteTo.Console()
