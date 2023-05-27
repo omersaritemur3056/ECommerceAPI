@@ -1,10 +1,12 @@
-﻿using ECommerceAPI.Application.Abstraction.Storage;
+﻿using ECommerceAPI.Application.Abstraction.Services;
+using ECommerceAPI.Application.Abstraction.Storage;
 using ECommerceAPI.Application.Constants;
 using ECommerceAPI.Application.CustomAttributes;
 using ECommerceAPI.Application.Enums;
 using ECommerceAPI.Application.Features.Commands.Product.CreateProduct;
 using ECommerceAPI.Application.Features.Commands.Product.RemoveProduct;
 using ECommerceAPI.Application.Features.Commands.Product.UpdateProduct;
+using ECommerceAPI.Application.Features.Commands.Product.UpdateStockQRCodeToProduct;
 using ECommerceAPI.Application.Features.Commands.ProductImageFile.ChangeShowcaseImage;
 using ECommerceAPI.Application.Features.Commands.ProductImageFile.RemoveProductImage;
 using ECommerceAPI.Application.Features.Commands.ProductImageFile.UploadProductImage;
@@ -30,10 +32,12 @@ namespace ECommerceAPI.API.Controllers
     public class ProductsController : ControllerBase
     {
         readonly IMediator _mediator;
+        readonly IProductService _productService;
 
-        public ProductsController(IMediator mediator)
+        public ProductsController(IMediator mediator, IProductService productService)
         {
             _mediator = mediator;
+            _productService = productService;
         }
 
         [HttpGet]
@@ -112,6 +116,20 @@ namespace ECommerceAPI.API.Controllers
         public async Task<IActionResult> ChangeShowcaseImage([FromQuery] ChangeShowcaseImageCommandRequest changeShowcaseImageCommandRequest)
         {
             ChangeShowcaseImageCommandResponse response = await _mediator.Send(changeShowcaseImageCommandRequest);
+            return Ok(response);
+        }
+
+        [HttpGet("qrcode/{productId}")]
+        public async Task<IActionResult> GetQRCodeToProduct([FromRoute] string productId)
+        {
+            var data = await _productService.QRCodeToProductAsync(productId);
+            return File(data, "image/png");
+        }
+
+        [HttpPut("qrcode")]
+        public async Task<IActionResult> UpdateStockQrCodeToProduct(UpdateStockQrCodeToProductCommandRequest updateStockQrCodeToProductCommandRequest)
+        {
+            UpdateStockQrCodeToProductCommandResponse response = await _mediator.Send(updateStockQrCodeToProductCommandRequest);
             return Ok(response);
         }
     }
