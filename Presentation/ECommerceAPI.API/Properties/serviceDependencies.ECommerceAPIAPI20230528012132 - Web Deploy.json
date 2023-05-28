@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "apis1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/ECommerceAPIAPIapi/apis/ECommerceAPI",
+      "type": "apis.azure"
+    }
+  }
+}
